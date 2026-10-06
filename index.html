@@ -481,8 +481,8 @@ function goalPlan(R,t){
   const rows=LEVERS.map(g=>({g,n:g.ids.filter(id=>open.includes(id)).length})).filter(x=>x.n>0)
     .map(x=>`<tr><td>${x.g.l}</td><td class="r num">${x.n}</td><td class="r num">+${x.g.f.toFixed(3).replace(".",",")}</td></tr>`).join("");
   return `${head}<h3 style="margin-top:14px">Wo ein Punkt am meisten bringt</h3>
-   <div class="tbl" style="margin-top:6px"><table><thead><tr><th>Offene Leistung</th><th class="r">offen</th><th class="r">je Punkt</th></tr></thead><tbody>${rows}</tbody></table></div>
-   <p class="note">\u201eJe Punkt\u201c: um so viel steigt die Abschlussnote, wenn du in einer einzelnen Arbeit dieser Art einen Punkt mehr holst. Beispiel: Ein Punkt mehr in einer m\u00fcndlichen Teilnote bringt fast 19-mal so viel wie ein Punkt mehr in einer Grundstudiumsklausur.</p>`;
+   <div class="tbl" style="margin-top:6px"><table><thead><tr><th>Noch nicht eingetragene Arbeit</th><th class="r">Wie viele fehlen noch</th><th class="r">So viel steigt die Abschlussnote pro Punkt mehr</th></tr></thead><tbody>${rows}</tbody></table></div>
+   <p class="note">Lesebeispiel: Holst du in einer m\u00fcndlichen Teilnote einen Punkt mehr, steigt deine Abschlussnote um 0,150. Ein Punkt mehr in einer Grundstudiumsklausur bringt nur 0,008, also fast 19-mal weniger.</p>`;
 }
 function overview(){
   return `<section class="card"><div class="eyebrow">Studienaufbau (\u00a7\u00a7 7, 13, 20 ff.)</div><h2>Welche Arbeiten wann geschrieben werden</h2>

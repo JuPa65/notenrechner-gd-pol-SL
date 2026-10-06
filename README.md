@@ -25,4 +25,4 @@ Alle eingegebenen Noten bleiben ausschließlich lokal im Browser des jeweiligen 
 
 Die APO nennt für die sechs weiteren Leistungsnachweise in der Vornote keinen Faktor; gerechnet wird einfach. Der Jahresdurchschnitt im Hauptstudium wird aus allen fünf Leistungen einfach gebildet.
 
-Private Modellrechnung ohne Gewähr. Maßgeblich ist die Festsetzung durch Fachbereich und Prüfungsausschuss.
+Diese private Modellrechnung ist ohne Gewähr und rechtliche Bindung. Maßgeblich ist die Festsetzung durch den Fachbereich und das Prüfungsamt.

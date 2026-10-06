@@ -440,7 +440,7 @@ function renderAB(R){
    <label for="ex-jg">Jahrgang / Kurs (optional)<input id="ex-jg" value="${esc(S.jg||"")}" placeholder="z. B. P48"></label></div>
    <div class="btns"><button class="btn primary" id="ex-pdf" type="button">Als PDF speichern</button><button class="btn" id="ex-doc" type="button">Als Word-Datei speichern</button></div>
    <p class="note" id="ex-msg" aria-live="polite"></p></section>`:""}
-  <p class="note">Private Modellrechnung ohne Gew\u00e4hr, ma\u00dfgeblich ist die Festsetzung durch Fachbereich und Pr\u00fcfungsausschuss.</p>`;
+  <p class="note">Diese private Modellrechnung ist ohne Gew\u00e4hr und rechtliche Bindung. Ma\u00dfgeblich ist die Festsetzung durch den Fachbereich und das Pr\u00fcfungsamt.</p>`;
   placeMarker("mk-ab",R.failed?null:a);
   if(EXPORT_OK){
     const nm=document.getElementById("ex-name"),jg=document.getElementById("ex-jg");
@@ -562,7 +562,7 @@ function reportData(){
   const finLabel=R.failed?"Kein Gesamtergebnis (Pr\u00fcfungsteil nicht bestanden)":R.final!=null?(ge(R.final,3.5)?"Abschlussnote":"Abschlussnote (nicht bestanden)"):"Hochrechnung (noch nicht alle Teile vorhanden)";
   return {secs,ab,fin,finLabel};
 }
-const FOOT="Vornote 20 %, Diplomarbeit 10 %, schriftliche Pr\u00fcfung 40 %, m\u00fcndliche Pr\u00fcfung 30 % (\u00a7 29 APO g. D. Pol. vom 13.09.2024, ab P46). Vornote: Aufsichtsarbeiten Grundstudium \u00d71, HS I \u00d72, HS II \u00d73, weitere Leistungsnachweise \u00d71 (Annahme). Gesamtnoten auf zwei Stellen kaufm\u00e4nnisch gerundet. Private Modellrechnung ohne Gew\u00e4hr.";
+const FOOT="Vornote 20 %, Diplomarbeit 10 %, schriftliche Pr\u00fcfung 40 %, m\u00fcndliche Pr\u00fcfung 30 % (\u00a7 29 APO g. D. Pol. vom 13.09.2024, ab P46). Vornote: Aufsichtsarbeiten Grundstudium \u00d71, HS I \u00d72, HS II \u00d73, weitere Leistungsnachweise \u00d71 (Annahme). Gesamtnoten auf zwei Stellen kaufm\u00e4nnisch gerundet. Diese private Modellrechnung ist ohne Gew\u00e4hr und rechtliche Bindung. Ma\u00dfgeblich ist die Festsetzung durch den Fachbereich und das Pr\u00fcfungsamt.";
 const LIMITS=[["1 sehr gut","13 bis 15","12,50 bis 15,00"],["2 gut","10 bis 12","9,50 bis 12,49"],["3 befriedigend","07 bis 09","6,50 bis 9,49"],["4 ausreichend","04 bis 06","3,50 bis 6,49"],["5 mangelhaft","01 bis 03","0,50 bis 3,49"],["6 ungen\u00fcgend","00","0,00 bis 0,49"]];
 function stamp(){const d=new Date();return {de:d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"}),iso:d.toISOString().slice(0,10)};}
 function fname(ext){const n=(S.name||"").replace(/[^A-Za-z0-9\u00c4\u00d6\u00dc\u00e4\u00f6\u00fc\u00df_-]+/g,"_").replace(/^_+|_+$/g,"");return `Notenuebersicht${n?"_"+n:""}_${stamp().iso}.${ext}`;}

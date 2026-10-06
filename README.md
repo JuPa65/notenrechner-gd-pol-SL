@@ -19,7 +19,7 @@ Am Handy die Seite öffnen und „Zum Startbildschirm hinzufügen“ wählen. Da
 
 ## Datenschutz
 
-Alle eingegebenen Noten bleiben ausschließlich lokal im Browser des jeweiligen Geräts. Es werden keine Noten an einen Server übertragen, und dieses Repository enthält keine Noten.
+Alle eingegebenen Noten bleiben ausschließlich lokal im Browser des jeweiligen Geräts. Es werden keine Noten an einen Server übertragen, und dieses Repository enthält keine Noten. Die App lädt keine Inhalte von Drittanbietern (Schriften und Bibliotheken liegen im Repository), nutzt eine Content-Security-Policy und prüft gespeicherte Daten beim Laden.
 
 ## Annahmen
 

@@ -1,0 +1,10 @@
+{
+  "name": "notenrechner-gd-pol-sl",
+  "private": true,
+  "description": "Liste der im Ordner vendor/ mitgelieferten Bibliotheken, damit GitHub Dependabot sie auf bekannte Sicherheitsluecken pruefen kann. Wird nicht installiert oder gebaut.",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "docx": "8.5.0",
+    "jspdf": "4.2.1"
+  }
+}

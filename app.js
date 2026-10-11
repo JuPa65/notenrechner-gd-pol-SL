@@ -260,7 +260,7 @@ function renderAB(R){
    <tr><td>Aufsichtsarbeiten HS II (180 min)</td><td class="r num">2</td><td class="r num">\u00d73</td><td class="r num">6</td></tr>
    <tr><td>Weitere Leistungsnachweise HS I und II</td><td class="r num">6</td><td class="r num">\u00d71</td><td class="r num">6</td></tr>
    <tr class="hl"><td><b>Summe</b></td><td class="r num">19</td><td></td><td class="r num"><b>25</b></td></tr></tbody></table></div>
-   <p class="note"><span class="flag">ANNAHME</span> Die APO nennt f\u00fcr die sechs weiteren Leistungsnachweise keinen Faktor. Gerechnet wird mit einfacher Gewichtung.</p></section>
+   <p class="note"><span class="flag ok">PR\u00dcFUNGSAMT</span> In der Vornote z\u00e4hlen die Aufsichtsarbeiten HS I zweifach und HS II dreifach, die weiteren Leistungsnachweise einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026).</p></section>
   <section class="card"><div class="eyebrow">Zielrechner</div><h3>Was brauche ich noch?</h3>
    <div class="target"><label for="tgt">Zielnote (Punkte)</label><input id="tgt" inputmode="decimal" value="${esc(String(S.target).replace(".",","))}" maxlength="5">
    <button class="btn" type="button" data-tg="12.5">sehr gut</button><button class="btn" type="button" data-tg="9.5">gut</button><button class="btn" type="button" data-tg="6.5">befriedigend</button><button class="btn" type="button" data-tg="3.5">bestanden</button></div>
@@ -336,7 +336,7 @@ function overview(){
    <li>H\u00f6chstens zwei 01 bis 03, keine 00 und Jahresdurchschnitt mindestens 4,00: erreicht</li>
    <li>Nur eine schriftliche Aufsichtsarbeit mit 00, alles andere mindestens 04: Wiederholung dieser Arbeit</li>
    <li>Sonst nicht erreicht, Zweitkorrektur (bei Schnitt unter 4,00 aller Leistungen)</li>
-   <li><span class="flag">ANNAHME</span> Jahresdurchschnitt aus allen f\u00fcnf Leistungen, einfach gewichtet</li></ul></section>
+   <li><span class="flag ok">PR\u00dcFUNGSAMT</span> F\u00fcr das Bestehen z\u00e4hlen die 2 Aufsichtsarbeiten und die 3 Leistungsnachweise je einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026)</li></ul></section>
   <section class="card"><h3>Wiederholung (\u00a7\u00a7 15, 34)</h3><ul class="plain">
    <li>Studienjahr: einmalig, wenn der Jahresdurchschnitt mindestens 4,00 betr\u00e4gt, sonst nur als begr\u00fcndete Ausnahme</li>
    <li>Nur ein Studienjahr darf wiederholt werden, dabei sind alle Leistungen neu zu erbringen</li>
@@ -393,7 +393,7 @@ function reportData(){
   const finLabel=R.failed?"Kein Gesamtergebnis (Pr\u00fcfungsteil nicht bestanden)":R.final!=null?(ge(R.final,3.5)?"Abschlussnote":"Abschlussnote (nicht bestanden)"):"Hochrechnung (noch nicht alle Teile vorhanden)";
   return {secs,ab,fin,finLabel};
 }
-const FOOT="Vornote 20 %, Diplomarbeit 10 %, schriftliche Pr\u00fcfung 40 %, m\u00fcndliche Pr\u00fcfung 30 % (\u00a7 29 APO g. D. Pol. vom 13.09.2024, ab P46). Vornote: Aufsichtsarbeiten Grundstudium \u00d71, HS I \u00d72, HS II \u00d73, weitere Leistungsnachweise \u00d71 (Annahme). Gesamtnoten auf zwei Stellen kaufm\u00e4nnisch gerundet. Diese private Modellrechnung ist ohne Gew\u00e4hr und rechtliche Bindung. Ma\u00dfgeblich ist die Festsetzung durch den Fachbereich und das Pr\u00fcfungsamt.";
+const FOOT="Vornote 20 %, Diplomarbeit 10 %, schriftliche Pr\u00fcfung 40 %, m\u00fcndliche Pr\u00fcfung 30 % (\u00a7 29 APO g. D. Pol. vom 13.09.2024, ab P46). Vornote: Aufsichtsarbeiten Grundstudium \u00d71, HS I \u00d72, HS II \u00d73, weitere Leistungsnachweise \u00d71. F\u00fcr das Bestehen des Studienabschnitts z\u00e4hlen im HS alle f\u00fcnf Leistungen einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026). Gesamtnoten auf zwei Stellen kaufm\u00e4nnisch gerundet. Diese private Modellrechnung ist ohne Gew\u00e4hr und rechtliche Bindung. Ma\u00dfgeblich ist die Festsetzung durch den Fachbereich und das Pr\u00fcfungsamt.";
 const LIMITS=[["1 sehr gut","13 bis 15","12,50 bis 15,00"],["2 gut","10 bis 12","9,50 bis 12,49"],["3 befriedigend","07 bis 09","6,50 bis 9,49"],["4 ausreichend","04 bis 06","3,50 bis 6,49"],["5 mangelhaft","01 bis 03","0,50 bis 3,49"],["6 ungen\u00fcgend","00","0,00 bis 0,49"]];
 function stamp(){const d=new Date();return {de:d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"}),iso:d.toISOString().slice(0,10)};}
 function fname(ext){const n=(S.name||"").replace(/[^A-Za-z0-9\u00c4\u00d6\u00dc\u00e4\u00f6\u00fc\u00df_-]+/g,"_").replace(/^_+|_+$/g,"").slice(0,40);return `Notenuebersicht${n?"_"+n:""}_${stamp().iso}.${ext}`;}

@@ -21,8 +21,8 @@ Am Handy die Seite öffnen und „Zum Startbildschirm hinzufügen“ wählen. Da
 
 Alle eingegebenen Noten bleiben ausschließlich lokal im Browser des jeweiligen Geräts. Es werden keine Noten an einen Server übertragen, und dieses Repository enthält keine Noten. Die App lädt keine Inhalte von Drittanbietern (Schriften und Bibliotheken liegen im Repository), nutzt eine Content-Security-Policy und prüft gespeicherte Daten beim Laden.
 
-## Annahmen
+## Gewichtung im Hauptstudium (Auskunft Prüfungsamt, Oktober 2026)
 
-Die APO nennt für die sechs weiteren Leistungsnachweise in der Vornote keinen Faktor; gerechnet wird einfach. Der Jahresdurchschnitt im Hauptstudium wird aus allen fünf Leistungen einfach gebildet.
+Für das Bestehen eines Studienabschnitts (HS I und HS II) zählen die 2 Aufsichtsarbeiten und die 3 Leistungsnachweise je einfach. In der Vornote zählen die Aufsichtsarbeiten HS I zweifach und HS II dreifach, die Leistungsnachweise einfach.
 
 Diese private Modellrechnung ist ohne Gewähr und rechtliche Bindung. Maßgeblich ist die Festsetzung durch den Fachbereich und das Prüfungsamt.

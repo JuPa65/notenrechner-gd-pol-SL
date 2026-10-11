@@ -1,5 +1,5 @@
 /* Offline-Cache nur fuer eigene Dateien dieser App */
-const PREFIX="notenrechner-",CACHE=PREFIX+"v8";
+const PREFIX="notenrechner-",CACHE=PREFIX+"v9";
 const SHELL=["./","index.html","app.js","manifest.webmanifest","fonts/fonts.css",
  "fonts/archivo-latin-700-normal.woff2","fonts/archivo-latin-800-normal.woff2",
  "fonts/source-sans-3-latin-400-normal.woff2","fonts/source-sans-3-latin-600-normal.woff2","fonts/source-sans-3-latin-700-normal.woff2",

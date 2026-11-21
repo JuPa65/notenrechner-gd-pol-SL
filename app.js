@@ -79,8 +79,24 @@ function loadState(raw){
   o.name=cleanText(d.name); o.jg=cleanText(d.jg); if(typeof d.helpOpen==="boolean")o.helpOpen=d.helpOpen;
   return o;
 }
-try{const r=localStorage.getItem(KEY);if(r){S=loadState(r);}else{S.v={...DEMO};S.demo=true;}}catch(e){S={v:{...DEMO},demo:true,tab:"gs",target:9.5,name:"",jg:""};}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+/* Datenschutz durch Voreinstellung: gespeichert wird nur, wenn die Person es einschaltet.
+   Wer schon Daten gespeichert hat, behaelt die Einstellung "speichern". */
+let PERSIST=false;
+try{const r=localStorage.getItem(KEY);if(r){S=loadState(r);PERSIST=true;}else{S.v={...DEMO};S.demo=true;}}catch(e){S={v:{...DEMO},demo:true,tab:"gs",target:9.5,name:"",jg:""};}
+function save(){if(!PERSIST)return;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function setPersist(on){PERSIST=!!on;if(PERSIST){save();}else{try{localStorage.removeItem(KEY);}catch(e){}}updatePersist();}
+async function wipeDevice(){
+  try{localStorage.removeItem(KEY);}catch(e){}
+  try{if(window.caches){const ks=await caches.keys();await Promise.all(ks.filter(k=>k.startsWith("notenrechner-")).map(k=>caches.delete(k)));}}catch(e){}
+  try{if(navigator.serviceWorker){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()));}}catch(e){}
+  PERSIST=false;S={v:{...DEMO},demo:true,tab:"gs",target:9.5,name:"",jg:""};build();
+  const m=document.getElementById("persist-msg");if(m)m.textContent="Alle Daten des Notenrechners wurden von diesem Ger\u00e4t gel\u00f6scht. Bis du das H\u00e4kchen wieder setzt, wird nichts gespeichert.";
+}
+function updatePersist(){
+  const cb=document.getElementById("persist"),st=document.getElementById("persist-state");
+  if(cb)cb.checked=PERSIST;
+  if(st){st.textContent=PERSIST?"Speichern ist an: Deine Eingaben liegen im Browser dieses Ger\u00e4ts.":"Speichern ist aus: Deine Eingaben sind beim Schlie\u00dfen der Seite weg.";st.className="pstate "+(PERSIST?"on":"off");}
+}
 
 /* \u00a7 28 II: zwei Dezimalstellen, dritte Stelle kaufm\u00e4nnisch gerundet */
 const r2=x=>x==null?null:Math.round((x+1e-9)*100)/100;
@@ -183,6 +199,15 @@ function build(){
   const help=document.getElementById("help");
   help.open=S.helpOpen!==false;
   help.ontoggle=()=>{S.helpOpen=help.open;save();};
+  const cb=document.getElementById("persist");cb.onchange=()=>{setPersist(cb.checked);document.getElementById("persist-msg").textContent="";};
+  const w1=document.getElementById("wipe1"),w2=document.getElementById("wipe2");
+  w1.hidden=false;w2.hidden=true;
+  w1.onclick=()=>{w1.hidden=true;w2.hidden=false;setTimeout(()=>{w1.hidden=false;w2.hidden=true;},6000);};
+  w2.onclick=()=>{wipeDevice();};
+  const o=location.origin&&location.origin!=="null"?location.origin:"(lokale Datei)";
+  document.querySelectorAll(".js-origin").forEach(e=>e.textContent=o);
+  document.querySelectorAll(".js-ff").forEach(e=>e.textContent=o.replace("://","+++").replace(/:(\d+)$/,"+$1"));
+  updatePersist();
   showTab();update();
 }
 function showTab(){

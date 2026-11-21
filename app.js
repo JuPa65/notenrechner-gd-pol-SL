@@ -297,7 +297,7 @@ function renderAB(R){
    <p class="note">Erstellt ein formatiertes Dokument mit allen eingetragenen Noten, Durchschnitten, Studienzielen und der Abschlussnote. Am Handy \u00f6ffnet sich das Teilen-Men\u00fc, dort \u201eIn Dateien sichern\u201c w\u00e4hlen.</p>
    <div class="weights"><label for="ex-name">Name (optional)<input id="ex-name" value="${esc(S.name||"")}" maxlength="60" autocomplete="name"></label>
    <label for="ex-jg">Jahrgang / Kurs (optional)<input id="ex-jg" value="${esc(S.jg||"")}" maxlength="60" placeholder="z. B. P48"></label></div>
-   <div class="btns"><button class="btn primary" id="ex-pdf" type="button">Als PDF speichern</button><button class="btn" id="ex-doc" type="button">Als Word-Datei speichern</button></div>
+   <div class="btns"><button class="btn soft" id="ex-pdf" type="button">PDF speichern</button><button class="btn soft" id="ex-doc" type="button">Word speichern</button></div>
    <p class="note" id="ex-msg" aria-live="polite"></p></section>`:""}
   <p class="note">Diese private Modellrechnung ist ohne Gew\u00e4hr und rechtliche Bindung. Ma\u00dfgeblich ist die Festsetzung durch den Fachbereich und das Pr\u00fcfungsamt.</p>`;
   placeMarker("mk-ab",R.failed?null:a);

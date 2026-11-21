@@ -442,47 +442,145 @@ async function deliver(blob,name){
   const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),4000);msg.textContent=`Gespeichert als ${name}`;
 }
+/* ===== PDF-Bericht: strukturierte Uebersicht mit Rechenweg und Erlaeuterungen ===== */
 function exportPDF(){
-  const {jsPDF}=window.jspdf,doc=new jsPDF({unit:"mm",format:"a4"}),D=reportData(),st=stamp();
-  const PW=210,M=16,CW=PW-2*M;let y=M;
-  const navy=[31,78,140],grey=[90,104,120],line=[211,218,228];
-  const need=h=>{if(y+h>285){doc.addPage();y=M;}};
-  doc.setFont("helvetica","bold");doc.setFontSize(18);doc.setTextColor(...navy);doc.text("Noten\u00fcbersicht Diplomstudium gD Polizei",M,y+6);y+=12;
-  doc.setFont("helvetica","normal");doc.setFontSize(10);doc.setTextColor(...grey);
+  const {jsPDF}=window.jspdf,doc=new jsPDF({unit:"mm",format:"a4"}),R=evalAll(),st=stamp();
+  const PW=210,PH=297,M=16,CW=PW-2*M,BOT=280;let y=0;
+  const C={navy:[31,78,140],ink:[20,32,46],grey:[90,104,120],line:[211,218,228],soft:[233,237,243],tint:[219,230,245],
+    gs:[0,131,160],hs1:[0,128,118],hs2:[86,130,30],lp:[106,72,160],ab:[31,78,140]};
+  const STC={ok:[[29,122,74],[220,241,229]],warn:[[154,98,0],[251,236,208]],bad:[[176,48,42],[248,222,220]],idle:[[90,104,120],[233,237,243]]};
+  const f=(w,s,c)=>{doc.setFont("helvetica",w);doc.setFontSize(s);doc.setTextColor(...(c||C.ink));};
+  const newPage=()=>{doc.addPage();y=M+4;};
+  const need=h=>{if(y+h>BOT)newPage();};
+  const para=(t,size=9,col=C.ink,w="normal",indent=0,lh=4.3)=>{f(w,size,col);const ls=doc.splitTextToSize(t,CW-indent);need(ls.length*lh+1);doc.text(ls,M+indent,y);y+=ls.length*lh+1.2;};
   const who=[S.name,S.jg].filter(Boolean).join(" \u00b7 ");
-  doc.text(`${who?who+" \u00b7 ":""}Stand ${st.de} \u00b7 APO g. D. Pol. 2024`,M,y);y+=8;
-  doc.setFillColor(219,230,245);doc.roundedRect(M,y,CW,20,2,2,"F");
-  doc.setTextColor(...grey);doc.setFontSize(9);doc.text(D.finLabel.toUpperCase(),M+5,y+7);
-  doc.setTextColor(...navy);doc.setFont("helvetica","bold");doc.setFontSize(20);
-  doc.text(D.fin==null?"--":fmt(D.fin)+" Punkte",M+5,y+16);
-  if(D.fin!=null){doc.setFontSize(12);doc.text(`${gradeOfAvg(D.fin).w} (Note ${gradeOfAvg(D.fin).g})`,PW-M-5,y+16,{align:"right"});}
-  y+=28;
-  const table=(head,rows,widths,aligns)=>{
-    const lh=4.6;doc.setFontSize(9);
-    need(8);doc.setFont("helvetica","bold");doc.setTextColor(...grey);
-    let x=M;head.forEach((h,i)=>{doc.text(h,aligns[i]==="r"?x+widths[i]-1:x+1,y,{align:aligns[i]==="r"?"right":"left"});x+=widths[i];});
-    y+=2;doc.setDrawColor(...line);doc.line(M,y,M+CW,y);y+=4;
-    doc.setFont("helvetica","normal");doc.setTextColor(20,32,46);
-    rows.forEach(r=>{
-      const cells=r.map((c,i)=>doc.splitTextToSize(String(c),widths[i]-2));
-      const h=Math.max(...cells.map(c=>c.length))*lh;need(h+2);
-      let x=M;cells.forEach((c,i)=>{doc.text(c,aligns[i]==="r"?x+widths[i]-1:x+1,y,{align:aligns[i]==="r"?"right":"left"});x+=widths[i];});
-      y+=h-lh+2.5;doc.line(M,y,M+CW,y);y+=4.2;});
+  const gtx=a=>a==null?"":`${gradeOfAvg(a).w} (Note ${gradeOfAvg(a).g})`;
+
+  /* Kopf */
+  doc.setFillColor(...C.navy);doc.rect(0,0,PW,30,"F");
+  f("bold",17,[255,255,255]);doc.text("Noten\u00fcbersicht Diplomstudium gD Polizei",M,13);
+  f("normal",9.5,[219,230,245]);doc.text(`${who?who+" \u00b7 ":""}Stand ${st.de} \u00b7 nach APO g. D. Pol. vom 13.09.2024 (ab Jahrgang P46)`,M,20.5);
+  doc.text("Private Modellrechnung ohne Gew\u00e4hr, keine amtliche Festsetzung",M,25.5);
+  y=38;
+
+  /* Ergebnis-Kasten */
+  const fin=R.failed?null:(R.final!=null?R.final:R.part);
+  const finLabel=R.failed?"Kein Gesamtergebnis":R.final!=null?(ge(R.final,3.5)?"Abschlussnote":"Abschlussnote, nicht bestanden"):"Hochrechnung der Abschlussnote";
+  doc.setFillColor(...C.tint);doc.roundedRect(M,y,CW,26,2,2,"F");
+  f("bold",8,C.grey);doc.text(finLabel.toUpperCase(),M+6,y+7);
+  f("bold",24,C.navy);doc.text(fin==null?"--":fmt(fin),M+6,y+19);
+  f("normal",10,C.navy);doc.text(fin==null?"":"Punkte",M+6+doc.getTextWidth(fin==null?"--":fmt(fin))*24/10+3,y+19);
+  if(fin!=null){f("bold",13,C.navy);doc.text(gtx(fin),PW-M-6,y+13,{align:"right"});}
+  f("normal",8.5,C.grey);
+  const note=R.failed?"Ein Pr\u00fcfungsteil ist nicht bestanden, siehe Abschnitt Laufbahnpr\u00fcfung.":R.final!=null?"Alle Bestandteile sind eingetragen.":`Noch offen: ${R.missing.map(p=>({vn:"Vornote vollst\u00e4ndig",da:"Diplomarbeit",sp:"schriftliche Pr\u00fcfung",mp:"m\u00fcndliche Pr\u00fcfung"})[p.k]).join(", ")}.`;
+  doc.text(doc.splitTextToSize(note,90),PW-M-6,y+19,{align:"right"});
+  y+=32;
+
+  /* Kacheln je Abschnitt */
+  const tiles=[["Grundstudium",R.gs.avg,R.gs.st,C.gs],["Hauptstudium I",R.h1.avg,R.h1.st,C.hs1],["Hauptstudium II",R.h2.avg,R.h2.st,C.hs2],["Vornote",R.V.vn,R.V.n===19?"ok":"idle",C.ab]];
+  const tw=(CW-9)/4;
+  tiles.forEach((t,i)=>{const x=M+i*(tw+3);doc.setDrawColor(...C.line);doc.setFillColor(255,255,255);doc.roundedRect(x,y,tw,19,1.5,1.5,"FD");
+    doc.setFillColor(...t[3]);doc.rect(x,y,1.6,19,"F");
+    f("bold",7.5,C.grey);doc.text(t[0].toUpperCase(),x+4,y+5.5);f("bold",14,C.ink);doc.text(fmt(t[1]),x+4,y+12.5);
+    f("normal",7.5,STC[t[2]][0]);doc.text(t[1]==null?"noch keine Werte":gradeOfAvg(t[1]).w,x+4,y+16.8);});
+  y+=26;
+
+  /* Tabellen-Helfer */
+  const table=(cols,rows,o={})=>{
+    const lh=4.1,pad=1.6;
+    const head=()=>{need(9);doc.setFillColor(...C.soft);doc.rect(M,y-4,CW,6.4,"F");f("bold",7.8,C.grey);
+      let x=M;cols.forEach(c=>{doc.text(c.h,c.al==="r"?x+c.w-pad:x+pad,y,{align:c.al==="r"?"right":"left"});x+=c.w;});y+=6.6;};
+    head();
+    rows.forEach((r,ri)=>{
+      const sum=o.sumRow&&ri===rows.length-1;
+      f(sum?"bold":"normal",8.6,C.ink);
+      const cells=r.map((c,i)=>doc.splitTextToSize(String(c),cols[i].w-2*pad));
+      const h=Math.max(...cells.map(c=>c.length))*lh+1.4;
+      if(y+h>BOT){newPage();head();f(sum?"bold":"normal",8.6,C.ink);}
+      if(sum){doc.setFillColor(...C.tint);doc.rect(M,y-3.6,CW,h+0.6,"F");}
+      let x=M;cells.forEach((c,i)=>{doc.text(c,cols[i].al==="r"?x+cols[i].w-pad:x+pad,y,{align:cols[i].al==="r"?"right":"left"});x+=cols[i].w;});
+      y+=h-lh+0.6;doc.setDrawColor(...C.line);doc.line(M,y,M+CW,y);y+=lh;
+    });
+    y+=1;
   };
-  const h2=t=>{need(32);y+=2;doc.setFont("helvetica","bold");doc.setFontSize(12.5);doc.setTextColor(...navy);doc.text(t,M,y);y+=6;};
-  h2("Zusammensetzung der Abschlussnote");
-  table(["Bestandteil","Punkte","Gewicht","Beitrag"],D.ab,[CW-75,25,25,25],["l","r","r","r"]);
-  D.secs.forEach(s=>{
-    h2(s.title);
-    table(["Leistung","Art","Punkte","Note"],s.rows,[CW*0.36,CW*0.3,CW*0.12,CW*0.22],["l","l","r","l"]);
-    s.sum.forEach(([k,v])=>{doc.setFontSize(9.5);const lines=doc.splitTextToSize(v,CW-38);need(lines.length*4.6+2);
-      doc.setFont("helvetica","bold");doc.text(k,M+1,y);doc.setFont("helvetica","normal");doc.text(lines,M+38,y);y+=lines.length*4.6+1.5;});
+  const h2=(t,sub,col)=>{need(30);y+=3;doc.setFillColor(...col);doc.rect(M,y-4.6,2.2,7.2,"F");f("bold",13,col);doc.text(t,M+5,y+0.6);
+    if(sub){f("normal",8.5,C.grey);doc.text(sub,PW-M,y+0.6,{align:"right"});}y+=8;};
+  const calc=t=>{const ls=doc.splitTextToSize(t,CW-10);need(ls.length*4.4+4);doc.setFillColor(248,249,251);doc.setDrawColor(...C.line);
+    doc.roundedRect(M,y-3.6,CW,ls.length*4.4+3,1,1,"FD");f("normal",8.8,C.ink);doc.setFont("courier","bold");doc.text(ls,M+4,y+0.4);y+=ls.length*4.4+3.5;};
+  const status=(s,msg,sub)=>{const [fg,bg]=STC[s];f("normal",8.4,C.ink);const ls=sub?doc.splitTextToSize(sub,CW-10):[];const h=7+ls.length*3.9;need(h+3);
+    doc.setFillColor(...bg);doc.rect(M,y-3.8,CW,h,"F");doc.setFillColor(...fg);doc.rect(M,y-3.8,1.4,h,"F");
+    f("bold",9.2,fg);doc.text(msg,M+5,y+0.4);if(ls.length){f("normal",8.2,C.ink);doc.text(ls,M+5,y+4.6);}y+=h+2.5;};
+  const sumStr=a=>a.join(" + ");
+
+  /* Abschnitte des Studiums */
+  const secs=[["gs",R.gs,"Grundstudium","1. Studienjahr \u00b7 9 Aufsichtsarbeiten \u00b7 \u00a7 13 IV APO",C.gs],
+              ["hs1",R.h1,"Hauptstudium I","2. Studienjahr \u00b7 2 Aufsichtsarbeiten, 3 Leistungsnachweise \u00b7 \u00a7 13 VI APO",C.hs1],
+              ["hs2",R.h2,"Hauptstudium II","3. Studienjahr \u00b7 2 Aufsichtsarbeiten, 3 Leistungsnachweise \u00b7 \u00a7 13 VI APO",C.hs2]];
+  secs.forEach(([k,r,t,sub,col])=>{
+    h2(t,sub,col);
+    const its=items(k),filled=its.filter(i=>val(i.id)!==null);
+    const rows=its.map((i,n)=>{const v=val(i.id);return [String(n+1),i.l,(i.s.startsWith("Vornote")?"praktisch":i.s.split(" \u00b7 ")[0]),v==null?"offen":fmtP(v),v==null?"":gradeOfPoints(v).w,"\u00d7"+i.vw,v==null?"":String(v*i.vw)];});
+    const ps=filled.map(i=>val(i.id));
+    rows.push(["","Summe der eingetragenen Punkte","",String(ps.reduce((a,b)=>a+b,0)),"","",String(filled.reduce((a,i)=>a+val(i.id)*i.vw,0))]);
+    table([{h:"Nr.",w:9},{h:"Leistung",w:58},{h:"Art",w:34},{h:"Punkte",w:15,al:"r"},{h:"Note",w:26},{h:"Faktor",w:14,al:"r"},{h:"Punkte \u00d7 Faktor",w:22,al:"r"}],rows,{sumRow:true});
+    if(ps.length) calc(`Durchschnitt = (${sumStr(ps.map(String))}) \u00f7 ${ps.length} = ${fmt(r.avg)} Punkte, ${gradeOfAvg(r.avg).w}`);
+    para(k==="gs"?"F\u00fcr das Studienziel z\u00e4hlt jede Arbeit einfach. Die Spalte \u201eFaktor\u201c zeigt, wie stark die Arbeit sp\u00e4ter in der Vornote z\u00e4hlt."
+      :"F\u00fcr das Studienziel z\u00e4hlen alle f\u00fcnf Leistungen einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026). In der Vornote z\u00e4hlen die Aufsichtsarbeiten "+(k==="hs1"?"zweifach":"dreifach")+", die Leistungsnachweise einfach.",8.2,C.grey);
+    status(r.st,r.msg,r.sub);
   });
-  h2("Notengrenzen");
-  table(["Note","Einzelleistung","Gesamtergebnis"],LIMITS,[CW*0.4,CW*0.3,CW*0.3],["l","r","r"]);
-  need(16);doc.setFontSize(8);doc.setTextColor(...grey);
-  doc.text(doc.splitTextToSize(FOOT,CW),M,y+2);
-  const n=doc.getNumberOfPages();for(let i=1;i<=n;i++){doc.setPage(i);doc.setFontSize(8);doc.setTextColor(...grey);doc.text(`Seite ${i} von ${n}`,PW-M,292,{align:"right"});}
+
+  /* Vornote */
+  h2("Vornote","20 % der Abschlussnote \u00b7 \u00a7 29 I Nr. 1 APO",C.ab);
+  const grp=[["Aufsichtsarbeiten Grundstudium",["gs1","gs2","gs3","gs4","gs5","gs6","gs7","gs8","gs9"],1],["Aufsichtsarbeiten Hauptstudium I",["h11","h12"],2],["Aufsichtsarbeiten Hauptstudium II",["h21","h22"],3],["Weitere Leistungsnachweise HS I und II",["h13","h14","h15","h23","h24","h25"],1]];
+  let tS=0,tW=0;
+  const vrows=grp.map(([l,ids,fa])=>{const vs=ids.map(val).filter(v=>v!==null),s=vs.reduce((a,b)=>a+b,0);tS+=s*fa;tW+=vs.length*fa;
+    return [l,`${vs.length} von ${ids.length}`,String(s),"\u00d7"+fa,String(s*fa),String(vs.length*fa)];});
+  vrows.push(["Gesamt",`${R.V.n} von 19`,"","",String(tS),String(tW)]);
+  table([{h:"Gruppe",w:62},{h:"Eingetragen",w:22,al:"r"},{h:"Punkte",w:18,al:"r"},{h:"Faktor",w:16,al:"r"},{h:"Gewichtete Punkte",w:30,al:"r"},{h:"Anteile",w:30,al:"r"}],vrows,{sumRow:true});
+  if(tW) calc(`Vornote = ${tS} gewichtete Punkte \u00f7 ${tW} Anteile = ${fmt(R.V.vn)} Punkte${R.V.n<19?" (vorl\u00e4ufig)":""}`);
+  para("Vollst\u00e4ndig sind es 19 Leistungen mit zusammen 25 Anteilen: 9 \u00d7 1 + 2 \u00d7 2 + 2 \u00d7 3 + 6 \u00d7 1. Den Faktor der weiteren Leistungsnachweise nennt die APO nicht; er beruht auf der Auskunft des Pr\u00fcfungsamts (Oktober 2026).",8.2,C.grey);
+
+  /* Laufbahnpruefung */
+  const lp=R.lp;
+  h2("Laufbahnpr\u00fcfung","Teile 1 bis 3 \u00b7 \u00a7\u00a7 20 bis 29 APO",C.lp);
+  const ox=b=>b==null?"offen":b?"erf\u00fcllt":"nicht erf\u00fcllt";
+  table([{h:"Pr\u00fcfungsteil",w:58},{h:"Einzelnoten",w:34},{h:"Ergebnis",w:22,al:"r"},{h:"Mindestanforderung",w:46},{h:"Stand",w:18}],[
+    ["Teil 1: Diplomarbeit",lp.da==null?"offen":fmtP(lp.da),fmt(lp.da),"mindestens 04 (\u00a7 21 VIII)",ox(lp.daOk)],
+    ["Teil 2: Schriftliche Pr\u00fcfung (3 Arbeiten zu je 4 Stunden)",["x1","x2","x3"].map(i=>val(i)==null?"--":fmtP(val(i))).join(" / "),fmt(lp.sp),"zwei Arbeiten mindestens 04, die dritte mindestens 01, \u00d8 mindestens 4,00 (\u00a7 25 II)",ox(lp.spOk)],
+    ["Teil 3: M\u00fcndliche Pr\u00fcfung (je Fachgruppe eine Note)",["m1","m2"].map(i=>val(i)==null?"--":fmtP(val(i))).join(" / "),fmt(lp.mp),"\u00d8 mindestens 4,00, keine Fachgruppe 00 (\u00a7 27 III)",ox(lp.mpOk)]]);
+  if(lp.xf.length===3) calc(`Schriftlich = (${sumStr(lp.xf.map(String))}) \u00f7 3 = ${fmt(lp.sp)}`);
+  if(lp.mf.length===2) calc(`M\u00fcndlich = (${sumStr(lp.mf.map(String))}) \u00f7 2 = ${fmt(lp.mp)}`);
+  status(lp.st,lp.msg,lp.sub);
+
+  /* Abschlussnote */
+  h2("So entsteht die Abschlussnote","\u00a7 29 I und II APO",C.ab);
+  const L={vn:"Vornote",da:"Diplomarbeit",sp:"Schriftliche Pr\u00fcfung (\u00d8)",mp:"M\u00fcndliche Pr\u00fcfung (\u00d8)"};
+  const arows=R.parts.map(p=>[L[p.k],fmt(p.pv),W[p.k]+" %",p.pv!=null?fmt(p.pv*W[p.k]/100):"--"]);
+  arows.push([R.final!=null?"Abschlussnote":"Hochrechnung",fin==null?"--":fmt(fin),"100 %",fin==null?"--":fmt(fin)]);
+  table([{h:"Bestandteil",w:86},{h:"Punkte",w:30,al:"r"},{h:"Gewicht",w:30,al:"r"},{h:"Beitrag",w:32,al:"r"}],arows,{sumRow:true});
+  if(R.avail.length&&!R.failed){
+    if(R.final!=null) calc(`Abschlussnote = ${R.parts.map(p=>`${fmt(p.v)} \u00d7 ${(W[p.k]/100).toFixed(2).replace(".",",")}`).join(" + ")} = ${fmt(R.final)}`);
+    else{const kw=R.avail.reduce((a,p)=>a+W[p.k],0);
+      calc(`Hochrechnung = (${R.avail.map(p=>`${fmt(p.pv)} \u00d7 ${W[p.k]}`).join(" + ")}) \u00f7 ${kw} = ${fmt(R.part)}`);
+      para("Die Hochrechnung mittelt nur die schon vorhandenen Bestandteile nach ihrem Gewicht. Sie zeigt, wo du stehst, wenn du in den offenen Teilen so weitermachst wie bisher.",8.2,C.grey);}
+  }
+  if(R.failed) status("bad","Kein Gesamtergebnis","Mindestens ein Pr\u00fcfungsteil ist nicht bestanden. Dann wird kein Gesamtergebnis festgesetzt (\u00a7 29 IV).");
+  else if(R.final!=null) status(ge(R.final,3.5)?"ok":"bad",ge(R.final,3.5)?`Laufbahnpr\u00fcfung bestanden mit \u201e${gradeOfAvg(R.final).w}\u201c`:"Laufbahnpr\u00fcfung nicht bestanden",ge(R.final,3.5)?"":"Gesamtergebnis unter 3,50 Punkten (\u00a7 29 II S. 2).");
+  para("Jede Teilnote wird auf zwei Dezimalstellen berechnet, die dritte Stelle wird kaufm\u00e4nnisch gerundet (\u00a7 28 II). Bestanden ist die Laufbahnpr\u00fcfung ab einem Gesamtergebnis von 3,50 Punkten, wenn alle drei Pr\u00fcfungsteile bestanden sind (\u00a7 29 II).",8.2,C.grey);
+
+  /* Notengrenzen und Hinweise */
+  h2("Notengrenzen","\u00a7 28 I und \u00a7 29 II APO",C.grey);
+  table([{h:"Note",w:62},{h:"Einzelleistung (Punkte)",w:58,al:"r"},{h:"Gesamtergebnis (Punkte)",w:58,al:"r"}],LIMITS);
+  y+=2;need(26);
+  doc.setDrawColor(...C.line);doc.line(M,y,M+CW,y);y+=5;
+  para("Hinweise",9,C.navy,"bold");
+  para("Dieser Notenrechner ist ein GitHub-Projekt des Dozenten J\u00fcrgen Paulus und keine offizielle App der FHSV. Daher kann keine Gew\u00e4hr f\u00fcr die Richtigkeit der Berechnung gegeben werden. Ma\u00dfgeblich ist allein die Festsetzung durch den Fachbereich und das Pr\u00fcfungsamt.",8.2,C.grey);
+  para("Dieses Dokument wurde lokal auf deinem Ger\u00e4t erzeugt. Dabei wurden keine Daten an einen Server oder an Dritte \u00fcbertragen.",8.2,C.grey);
+
+  /* Fusszeile */
+  const n=doc.getNumberOfPages();
+  for(let i=1;i<=n;i++){doc.setPage(i);doc.setDrawColor(...C.line);doc.line(M,286,PW-M,286);f("normal",7.5,C.grey);
+    doc.text("Notenrechner Diplomstudium gD Polizei \u00b7 private Modellrechnung ohne Gew\u00e4hr",M,290.5);doc.text(`Seite ${i} von ${n}`,PW-M,290.5,{align:"right"});}
   deliver(doc.output("blob"),fname("pdf"));
 }
 async function exportDOCX(){

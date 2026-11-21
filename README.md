@@ -8,6 +8,14 @@ App öffnen: https://jupa65.github.io/notenrechner-gd-pol-SL/
 
 Am Handy die Seite öffnen und „Zum Startbildschirm hinzufügen“ wählen. Danach startet der Rechner wie eine App, auch offline.
 
+## In ILIAS (FHoeD)
+
+Der Rechner steht zusätzlich als HTML-Lernmodul in ILIAS bereit: https://fhoed.iliasnet.de/goto.php/htlm/7107315 (sichtbar, sobald das Modul freigeschaltet ist und Leserecht besteht).
+
+<img src="qr/qr-ilias.png" alt="QR-Code zum Notenrechner in ILIAS" width="180">
+
+Das fertige Paket zum Hochladen liegt unter `ilias/Notenrechner_ILIAS-Lernmodul.zip` (in ILIAS als „Lernmodul HTML“ anlegen, ZIP im Dateiverzeichnis hochladen und entpacken, Startdatei `index.html`). Die ILIAS-Fassung arbeitet ohne Service Worker; Rechnung, Datenschutz und Export sind identisch.
+
 ## Funktionen
 
 - Grundstudium, Hauptstudium I und II mit Studienziel-Prüfung nach § 13

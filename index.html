@@ -152,28 +152,7 @@ ul.plain li{margin:2px 0}
   </div>
 
   <section class="help" aria-label="Hinweise zur Bearbeitung">
-    <h2 class="help-title">Hinweise zur Bearbeitung:</h2>
-    <p>Beim ersten &#214;ffnen sind Beispielwerte eingetragen. Mit Klick auf den Button &#8222;Beispielwerte entfernen&#8220; werden diese entfernt und du startest leer.</p>
-    <p class="help-h">Beachte:</p>
-    <p>Dieser Notenrechner ist ein GitHub-Projekt des Dozenten J&#252;rgen Paulus und keine offizielle App der FHSV. Daher kann keine Gew&#228;hr f&#252;r die Richtigkeit der Berechnung gegeben werden.</p>
-    <p class="help-h">Hinweis zum Datenschutz:</p>
-    <p>Die vom Nutzer eingetragenen, pers&#246;nlichen Noten werden nur lokal auf dem Ger&#228;t verwendet, mit dem der Notenrechner aufgerufen wurde. Sie werden nicht an einen Server oder an Dritte &#252;bertragen.</p>
-    <p>Von sich aus speichert der Rechner nichts: Deine Eingaben stehen nur im Arbeitsspeicher und sind beim Schlie&#223;en der Seite weg. Erst wenn du das H&#228;kchen &#8222;Eingaben auf diesem Ger&#228;t speichern&#8220; setzt, legt der Browser sie auf diesem Ger&#228;t ab. Entfernst du das H&#228;kchen, wird der gespeicherte Eintrag sofort gel&#246;scht.</p>
-    <p>Mit &#8222;Alle Daten von diesem Ger&#228;t l&#246;schen&#8220; entfernst du alles, was der Notenrechner auf dem Ger&#228;t abgelegt hat: deine Eingaben und die Offline-Kopie der App.</p>
-    <details class="where">
-      <summary>Wo genau liegen die Daten auf dem Ger&#228;t?</summary>
-      <p>Gespeichert wird ein einziger Eintrag mit dem Namen <code>notenrechner-gd-pol-apo2024</code> im lokalen Speicher (localStorage) des Browsers, und zwar nur f&#252;r die Adresse <code class="js-origin"></code>. Andere Webseiten k&#246;nnen ihn nicht lesen. Die Offline-Kopie im Cache-Speicher enth&#228;lt nur die Programmdateien, keine Noten.</p>
-      <p>Ansehen kannst du den Eintrag am PC mit F12 (Entwicklertools), dort unter &#8222;Anwendung&#8220; bzw. &#8222;Application&#8220;, dann &#8222;Lokaler Speicher&#8220;. Die Browser legen ihn in diesen Ordnern ab (der Profilname kann abweichen):</p>
-      <ul>
-        <li>Chrome (Windows): <code>%LOCALAPPDATA%\Google\Chrome\User Data\Default\Local Storage\leveldb</code></li>
-        <li>Edge (Windows): <code>%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Local Storage\leveldb</code></li>
-        <li>Firefox (Windows): <code>%APPDATA%\Mozilla\Firefox\Profiles\&lt;Profil&gt;\storage\default\<span class="js-ff"></span>\ls</code></li>
-        <li>Chrome (macOS): <code>~/Library/Application Support/Google/Chrome/Default/Local Storage/leveldb</code></li>
-        <li>Safari, iPhone, iPad und Android: im gesch&#252;tzten Datenbereich des Browsers, &#252;ber einen Dateimanager nicht erreichbar.</li>
-      </ul>
-      <p>Diese Ordner enthalten auch Daten anderer Webseiten. L&#246;sche dort deshalb keine Dateien von Hand, sondern nutze den Button unten oder die Browser-Einstellungen (Website-Daten l&#246;schen).</p>
-    </details>
-    <details class="howto" id="help">
+    <details class="howto" id="help" open>
       <summary>So funktioniert der Rechner</summary>
       <ol>
         <li>In den Reitern den Studienabschnitt w&#228;hlen, dann</li>
@@ -183,6 +162,29 @@ ul.plain li{margin:2px 0}
       <li>&#8222;&#220;bersicht&#8220; und &#8222;Notengrenzen&#8220; erkl&#228;ren dir die Regeln der APO.</li>
     </ol>
     </details>
+    <div class="hints">
+      <h2 class="help-title">Hinweise zur Bearbeitung:</h2>
+      <p>Beim ersten &#214;ffnen sind Beispielwerte eingetragen. Mit Klick auf den Button &#8222;Beispielwerte entfernen&#8220; werden diese entfernt und du startest leer.</p>
+      <p class="help-h">Beachte:</p>
+      <p>Dieser Notenrechner ist ein GitHub-Projekt des Dozenten J&#252;rgen Paulus und keine offizielle App der FHSV. Daher kann keine Gew&#228;hr f&#252;r die Richtigkeit der Berechnung gegeben werden.</p>
+      <p class="help-h">Hinweis zum Datenschutz:</p>
+      <p>Die vom Nutzer eingetragenen, pers&#246;nlichen Noten werden nur lokal auf dem Ger&#228;t verwendet, mit dem der Notenrechner aufgerufen wurde. Sie werden nicht an einen Server oder an Dritte &#252;bertragen.</p>
+      <p>Von sich aus speichert der Rechner nichts: Deine Eingaben stehen nur im Arbeitsspeicher und sind beim Schlie&#223;en der Seite weg. Erst wenn du das H&#228;kchen &#8222;Eingaben auf diesem Ger&#228;t speichern&#8220; setzt, legt der Browser sie auf diesem Ger&#228;t ab. Entfernst du das H&#228;kchen, wird der gespeicherte Eintrag sofort gel&#246;scht.</p>
+      <p>Mit &#8222;Alle Daten von diesem Ger&#228;t l&#246;schen&#8220; entfernst du alles, was der Notenrechner auf dem Ger&#228;t abgelegt hat: deine Eingaben und die Offline-Kopie der App.</p>
+      <details class="where">
+        <summary>Wo genau liegen die Daten auf dem Ger&#228;t?</summary>
+        <p>Gespeichert wird ein einziger Eintrag mit dem Namen <code>notenrechner-gd-pol-apo2024</code> im lokalen Speicher (localStorage) des Browsers, und zwar nur f&#252;r die Adresse <code class="js-origin"></code>. Andere Webseiten k&#246;nnen ihn nicht lesen. Die Offline-Kopie im Cache-Speicher enth&#228;lt nur die Programmdateien, keine Noten.</p>
+        <p>Ansehen kannst du den Eintrag am PC mit F12 (Entwicklertools), dort unter &#8222;Anwendung&#8220; bzw. &#8222;Application&#8220;, dann &#8222;Lokaler Speicher&#8220;. Die Browser legen ihn in diesen Ordnern ab (der Profilname kann abweichen):</p>
+        <ul>
+          <li>Chrome (Windows): <code>%LOCALAPPDATA%\Google\Chrome\User Data\Default\Local Storage\leveldb</code></li>
+          <li>Edge (Windows): <code>%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Local Storage\leveldb</code></li>
+          <li>Firefox (Windows): <code>%APPDATA%\Mozilla\Firefox\Profiles\&lt;Profil&gt;\storage\default\<span class="js-ff"></span>\ls</code></li>
+          <li>Chrome (macOS): <code>~/Library/Application Support/Google/Chrome/Default/Local Storage/leveldb</code></li>
+          <li>Safari, iPhone, iPad und Android: im gesch&#252;tzten Datenbereich des Browsers, &#252;ber einen Dateimanager nicht erreichbar.</li>
+        </ul>
+        <p>Diese Ordner enthalten auch Daten anderer Webseiten. L&#246;sche dort deshalb keine Dateien von Hand, sondern nutze den Button unten oder die Browser-Einstellungen (Website-Daten l&#246;schen).</p>
+      </details>
+    </div>
   </section>
 
   <div class="toolbar">
@@ -203,7 +205,7 @@ ul.plain li{margin:2px 0}
     .help{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
     .help summary{cursor:pointer;font-weight:700;color:var(--accent)}
     .help .help-title{font:700 1rem var(--display);font-stretch:85%;color:var(--accent);margin:2px 0 4px}
-    .help .howto{margin-top:12px;border-top:2px solid var(--line);padding-top:10px}
+    .help .hints{margin-top:12px;border-top:2px solid var(--line);padding-top:10px}
     .help ol{margin:8px 0 0;padding-left:20px}
     .help li{margin:3px 0}
     .help p{margin:8px 0 2px;color:var(--muted);font-size:.92rem}

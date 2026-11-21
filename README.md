@@ -1,6 +1,6 @@
-# Notenrechner Bachelor gD Polizei (Saarland)
+# Notenrechner Diplomstudium gD Polizei (Saarland)
 
-Installierbare Web-App zur Berechnung von Studienzielen, Vornote und Abschlussnote im Bachelorstudium gehobener Polizeivollzugsdienst an der FHSV Saarland, nach der APO g. D. Pol. vom 13.09.2024 (ab Jahrgang P46).
+Installierbare Web-App zur Berechnung von Studienzielen, Vornote und Abschlussnote im Diplomstudium gehobener Polizeivollzugsdienst an der FHSV Saarland, nach der APO g. D. Pol. vom 13.09.2024 (ab Jahrgang P46).
 
 App öffnen: https://jupa65.github.io/notenrechner-gd-pol-SL/
 

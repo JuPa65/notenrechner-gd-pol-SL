@@ -418,7 +418,7 @@ function exportPDF(){
   const PW=210,M=16,CW=PW-2*M;let y=M;
   const navy=[31,78,140],grey=[90,104,120],line=[211,218,228];
   const need=h=>{if(y+h>285){doc.addPage();y=M;}};
-  doc.setFont("helvetica","bold");doc.setFontSize(18);doc.setTextColor(...navy);doc.text("Noten\u00fcbersicht Bachelor gD Polizei",M,y+6);y+=12;
+  doc.setFont("helvetica","bold");doc.setFontSize(18);doc.setTextColor(...navy);doc.text("Noten\u00fcbersicht Diplomstudium gD Polizei",M,y+6);y+=12;
   doc.setFont("helvetica","normal");doc.setFontSize(10);doc.setTextColor(...grey);
   const who=[S.name,S.jg].filter(Boolean).join(" \u00b7 ");
   doc.text(`${who?who+" \u00b7 ":""}Stand ${st.de} \u00b7 APO g. D. Pol. 2024`,M,y);y+=8;
@@ -469,7 +469,7 @@ async function exportDOCX(){
       ...rows.map(r=>new TableRow({children:r.map((c,i)=>new TableCell({width:{size:widths[i],type:WidthType.PERCENTAGE},children:[p(String(c),{size:19,align:right.includes(i)?AlignmentType.RIGHT:undefined})]}))}))]});
   const who=[S.name,S.jg].filter(Boolean).join(" \u00b7 ");
   const ch=[
-    new Paragraph({heading:HeadingLevel.TITLE,spacing:{after:80},children:[new TextRun({text:"Noten\u00fcbersicht Bachelor gD Polizei",bold:true,color:NAVY,size:36,font:"Calibri"})]}),
+    new Paragraph({heading:HeadingLevel.TITLE,spacing:{after:80},children:[new TextRun({text:"Noten\u00fcbersicht Diplomstudium gD Polizei",bold:true,color:NAVY,size:36,font:"Calibri"})]}),
     p(`${who?who+" \u00b7 ":""}Stand ${st.de} \u00b7 APO g. D. Pol. 2024`,{color:GREY}),
     new Paragraph({spacing:{before:200,after:200},shading:{type:ShadingType.CLEAR,fill:"DBE6F5",color:"auto"},children:[
       new TextRun({text:D.finLabel+": ",color:GREY,size:22,font:"Calibri"}),

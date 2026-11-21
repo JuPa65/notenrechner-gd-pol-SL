@@ -1,7 +1,7 @@
 {
-  "name": "Notenrechner Bachelor gD Polizei",
+  "name": "Notenrechner Diplomstudium gD Polizei",
   "short_name": "Notenrechner",
-  "description": "Durchschnitte, Studienziele und Abschlussnote im Bachelor gehobener Polizeivollzugsdienst berechnen",
+  "description": "Durchschnitte, Studienziele und Abschlussnote im Diplomstudium gehobener Polizeivollzugsdienst berechnen",
   "lang": "de",
   "start_url": "./",
   "scope": "./",

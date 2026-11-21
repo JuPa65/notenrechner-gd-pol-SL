@@ -76,7 +76,7 @@ function loadState(raw){
   if(d.v&&typeof d.v==="object"&&!Array.isArray(d.v)) for(const k of Object.keys(d.v)){const n=d.v[k];if(ids.has(k)&&Number.isInteger(n)&&n>=0&&n<=15)o.v[k]=n;}
   o.demo=d.demo===true; if(TABKEYS.includes(d.tab))o.tab=d.tab;
   const t=Number(d.target); if(Number.isFinite(t)&&t>=0&&t<=15)o.target=t;
-  o.name=cleanText(d.name); o.jg=cleanText(d.jg); if(typeof d.helpOpen==="boolean")o.helpOpen=d.helpOpen;
+  o.name=cleanText(d.name); o.jg=cleanText(d.jg); if(typeof d.helpOpen==="boolean")o.helpOpen=d.helpOpen; if(typeof d.hintsOpen==="boolean")o.hintsOpen=d.hintsOpen;
   return o;
 }
 /* Datenschutz durch Voreinstellung: gespeichert wird nur, wenn die Person es einschaltet.
@@ -199,6 +199,9 @@ function build(){
   const help=document.getElementById("help");
   help.open=S.helpOpen!==false;
   help.ontoggle=()=>{S.helpOpen=help.open;save();};
+  const hints=document.getElementById("hints");
+  hints.open=S.hintsOpen!==false;
+  hints.ontoggle=()=>{S.hintsOpen=hints.open;save();};
   const cb=document.getElementById("persist");cb.onchange=()=>{setPersist(cb.checked);document.getElementById("persist-msg").textContent="";};
   const w1=document.getElementById("wipe1"),w2=document.getElementById("wipe2");
   w1.hidden=false;w2.hidden=true;

@@ -162,8 +162,8 @@ ul.plain li{margin:2px 0}
       <li>&#8222;&#220;bersicht&#8220; und &#8222;Notengrenzen&#8220; erkl&#228;ren dir die Regeln der APO.</li>
     </ol>
     </details>
-    <div class="hints">
-      <h2 class="help-title">Hinweise zur Bearbeitung:</h2>
+    <details class="hints" id="hints" open>
+      <summary class="help-title">Hinweise zur Bearbeitung:</summary>
       <p>Beim ersten &#214;ffnen sind Beispielwerte eingetragen. Mit Klick auf den Button &#8222;Beispielwerte entfernen&#8220; werden diese entfernt und du startest leer.</p>
       <p class="help-h">Beachte:</p>
       <p>Dieser Notenrechner ist ein GitHub-Projekt des Dozenten J&#252;rgen Paulus und keine offizielle App der FHSV. Daher kann keine Gew&#228;hr f&#252;r die Richtigkeit der Berechnung gegeben werden.</p>
@@ -184,7 +184,7 @@ ul.plain li{margin:2px 0}
         </ul>
         <p>Diese Ordner enthalten auch Daten anderer Webseiten. L&#246;sche dort deshalb keine Dateien von Hand, sondern nutze den Button unten oder die Browser-Einstellungen (Website-Daten l&#246;schen).</p>
       </details>
-    </div>
+    </details>
   </section>
 
   <div class="toolbar">
@@ -205,6 +205,7 @@ ul.plain li{margin:2px 0}
     .help{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
     .help summary{cursor:pointer;font-weight:700;color:var(--accent)}
     .help .help-title{font:700 1rem var(--display);font-stretch:85%;color:var(--accent);margin:2px 0 4px}
+    .help .hints > summary{margin-bottom:4px}
     .help .hints{margin-top:12px;border-top:2px solid var(--line);padding-top:10px}
     .help ol{margin:8px 0 0;padding-left:20px}
     .help li{margin:3px 0}

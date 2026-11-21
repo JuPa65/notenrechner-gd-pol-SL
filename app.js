@@ -67,14 +67,14 @@ const KEY="notenrechner-gd-pol-apo2024";
 
 let S={v:{},demo:false,tab:"gs",target:9.5,name:"",jg:""};
 /* Gespeicherten Stand nur nach Pruefung uebernehmen (Whitelist, Typen, Wertebereiche) */
-const TABKEYS=["gs","hs1","hs2","lp","ab","ov","ng"];
+const TABKEYS=["gs","hs1","hs2","lp","ab","ov"];
 const cleanText=x=>typeof x==="string"?x.replace(/[\u0000-\u001f\u007f\u202a-\u202e\u2066-\u2069]/g,"").slice(0,60):"";
 function loadState(raw){
   const d=JSON.parse(raw),o={v:{},demo:false,tab:"gs",target:9.5,name:"",jg:""};
   if(!d||typeof d!=="object"||Array.isArray(d)) throw new Error("state");
   const ids=new Set(["gs","hs1","hs2","lp"].flatMap(s=>SECTIONS[s].groups.flatMap(g=>g.items.map(i=>i.id))));
   if(d.v&&typeof d.v==="object"&&!Array.isArray(d.v)) for(const k of Object.keys(d.v)){const n=d.v[k];if(ids.has(k)&&Number.isInteger(n)&&n>=0&&n<=15)o.v[k]=n;}
-  o.demo=d.demo===true; if(TABKEYS.includes(d.tab))o.tab=d.tab;
+  o.demo=d.demo===true; if(d.tab==="ng")o.tab="ov"; else if(TABKEYS.includes(d.tab))o.tab=d.tab;
   const t=Number(d.target); if(Number.isFinite(t)&&t>=0&&t<=15)o.target=t;
   o.name=cleanText(d.name); o.jg=cleanText(d.jg); if(typeof d.helpOpen==="boolean")o.helpOpen=d.helpOpen; if(typeof d.hintsOpen==="boolean")o.hintsOpen=d.hintsOpen;
   return o;
@@ -164,7 +164,7 @@ function evalAll(){
 }
 
 /* ===== Darstellung ===== */
-const TABS=[["gs","Grundstudium"],["hs1","HS I"],["hs2","HS II"],["lp","Laufbahnpr\u00fcfung"],["ab","Abschlussnote"],["ov","\u00dcbersicht"],["ng","Notengrenzen"]];
+const TABS=[["gs","Grundstudium"],["hs1","HS I"],["hs2","HS II"],["lp","Laufbahnpr\u00fcfung"],["ab","Abschlussnote"],["ov","\u00dcbersicht"]];
 function scaleHTML(id){
   const segs=[[0,0.5,"var(--g6)",""],[0.5,3.5,"var(--g5)","5"],[3.5,6.5,"var(--g4)","4"],[6.5,9.5,"var(--g3)","3"],[9.5,12.5,"var(--g2)","2"],[12.5,15,"var(--g1)","1"]];
   return `<div class="scale">${segs.map(s=>`<span style="flex:${s[1]-s[0]};background:${s[2]}">${s[3]}</span>`).join("")}<div class="marker" id="${id}" style="left:-10px"></div></div><div class="scale-axis num"><span>0</span><span>3,5</span><span>6,5</span><span>9,5</span><span>12,5</span><span>15</span></div>`;
@@ -186,8 +186,7 @@ function build(){
     <div class="panel" data-p="hs2">${sectionPanel("hs2")}</div>
     <div class="panel" data-p="lp">${sectionPanel("lp")}</div>
     <div class="panel" data-p="ab" id="p-ab"></div>
-    <div class="panel" data-p="ov">${overview()}</div>
-    <div class="panel" data-p="ng">${limits()}</div>`;
+    <div class="panel" data-p="ov">${overview()}</div>`;
   document.querySelectorAll(".row input").forEach(inp=>{const v=val(inp.dataset.id);inp.value=v===null?"":fmtP(v);inp.addEventListener("input",onInput);});
   document.getElementById("tabs").onclick=e=>{const b=e.target.closest("button");if(b){S.tab=b.dataset.t;save();showTab();}};
   document.getElementById("demo-clear").onclick=()=>{S.v={};S.demo=false;save();build();};
@@ -197,10 +196,11 @@ function build(){
   c1.onclick=()=>{c1.hidden=true;c2.hidden=false;setTimeout(()=>{c1.hidden=false;c2.hidden=true;},5000);};
   c2.onclick=()=>{S.v={};S.demo=false;save();build();};
   const help=document.getElementById("help");
-  help.open=S.helpOpen!==false;
+  help.open=false;
   help.ontoggle=()=>{S.helpOpen=help.open;save();};
   const hints=document.getElementById("hints");
-  hints.open=S.hintsOpen!==false;
+  hints.open=false;
+  const xp=document.getElementById("xport");if(xp)xp.open=false;
   hints.ontoggle=()=>{S.hintsOpen=hints.open;save();};
   const cb=document.getElementById("persist");cb.onchange=()=>{setPersist(cb.checked);document.getElementById("persist-msg").textContent="";};
   const w1=document.getElementById("wipe1"),w2=document.getElementById("wipe2");
@@ -355,6 +355,7 @@ function overview(){
   <tr><td><b>Pr\u00fcfung Teil 3</b></td><td>M\u00fcndliche Pr\u00fcfung in den F\u00e4chern beider Fachgruppen, je eine Note pro Fachgruppe</td><td class="num">25 bis 30 min</td><td>30 % Abschluss</td></tr>
   </tbody></table></div>
   <p class="note">Die Art der drei weiteren Leistungsnachweise pro Jahr legt die Fachbereichsleitung fest. Die Aufteilung oben folgt den Folien f\u00fcr P48. Bef\u00e4higungsberichte best\u00e4tigen nur das Erreichen des Studienziels und bekommen keine Punkte (\u00a7 13 VIII).</p></section>
+  ${limits()}
   <div class="split">
   <section class="card"><h3>Studienziel Grundstudium (\u00a7 13 IV)</h3><ul class="plain">
    <li>Alle 9 Arbeiten mindestens 04: erreicht</li>

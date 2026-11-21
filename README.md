@@ -15,11 +15,13 @@ Am Handy die Seite öffnen und „Zum Startbildschirm hinzufügen“ wählen. Da
 - Laufbahnprüfung mit Bestehensregeln nach §§ 21, 25, 27
 - Abschlussnote: Vornote 20 %, Diplomarbeit 10 %, schriftlich 40 %, mündlich 30 %
 - Kaufmännische Rundung auf zwei Stellen (§ 28 II), Notengrenzen nach § 29 II
-- Export der Notenübersicht als PDF oder Word-Datei
+- Export als PDF-Bericht (Noten je Studienabschnitt, Rechenwege, Studienziele, Vornote, Laufbahnprüfung, Abschlussnote, Erläuterungen) oder als Word-Datei
 
 ## Datenschutz
 
-Alle eingegebenen Noten bleiben ausschließlich lokal im Browser des jeweiligen Geräts. Es werden keine Noten an einen Server übertragen, und dieses Repository enthält keine Noten. Die App lädt keine Inhalte von Drittanbietern (Schriften und Bibliotheken liegen im Repository), nutzt eine Content-Security-Policy und prüft gespeicherte Daten beim Laden.
+Voreinstellung: Der Rechner speichert nichts. Eingaben stehen nur im Arbeitsspeicher und sind beim Schließen der Seite weg. Erst mit dem Häkchen „Eingaben auf diesem Gerät speichern“ legt der Browser einen einzigen Eintrag (`notenrechner-gd-pol-apo2024`) im lokalen Speicher (localStorage) ab; ohne Häkchen wird er sofort gelöscht. Der Knopf „Alle Daten von diesem Gerät löschen“ entfernt Eintrag, Offline-Kopie und Service Worker.
+
+Es werden keine Noten an einen Server übertragen, und dieses Repository enthält keine Noten. Die App lädt keine Inhalte von Drittanbietern (Schriften und Bibliotheken liegen im Repository), nutzt eine Content-Security-Policy und prüft gespeicherte Daten beim Laden. PDF und Word werden lokal im Browser erzeugt.
 
 ## Gewichtung im Hauptstudium (Auskunft Prüfungsamt, Oktober 2026)
 

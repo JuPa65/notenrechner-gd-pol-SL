@@ -171,7 +171,7 @@ function scaleHTML(id){
 }
 function sectionPanel(sec){
   const d=SECTIONS[sec];
-  return `<section class="card"><div class="eyebrow">${d.tab}</div><h2>${d.title}</h2><p class="intro">${d.intro}</p>
+  return `<section class="card"><h2>${d.title}</h2><p class="intro">${d.intro}</p>
   ${d.groups.map(g=>`<h3 style="margin-top:16px">${g.name}</h3><div class="rows">${g.items.map(i=>`
     <div class="row"><div class="lbl"><b>${i.l}</b><small>${i.s}</small></div>
     <input id="in-${i.id}" data-id="${i.id}" inputmode="numeric" maxlength="2" placeholder="--" aria-label="${i.l} Punkte">
@@ -288,7 +288,7 @@ function renderAB(R){
    <tr><td>Aufsichtsarbeiten HS II (180 min)</td><td class="r num">2</td><td class="r num">\u00d73</td><td class="r num">6</td></tr>
    <tr><td>Weitere Leistungsnachweise HS I und II</td><td class="r num">6</td><td class="r num">\u00d71</td><td class="r num">6</td></tr>
    <tr class="hl"><td><b>Summe</b></td><td class="r num">19</td><td></td><td class="r num"><b>25</b></td></tr></tbody></table></div>
-   <p class="note"><span class="flag ok">PR\u00dcFUNGSAMT</span> In der Vornote z\u00e4hlen die Aufsichtsarbeiten HS I zweifach und HS II dreifach, die weiteren Leistungsnachweise einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026).</p></section>
+   <p class="note"><span class="flag ok">Pr\u00fcfungsamt</span> In der Vornote z\u00e4hlen die Aufsichtsarbeiten HS I zweifach und HS II dreifach, die weiteren Leistungsnachweise einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026).</p></section>
   <section class="card"><div class="eyebrow">Zielrechner</div><h3>Was brauche ich noch?</h3>
    <div class="target"><label for="tgt">Zielnote (Punkte)</label><input id="tgt" inputmode="decimal" value="${esc(String(S.target).replace(".",","))}" maxlength="5">
    <button class="btn" type="button" data-tg="12.5">sehr gut</button><button class="btn" type="button" data-tg="9.5">gut</button><button class="btn" type="button" data-tg="6.5">befriedigend</button><button class="btn" type="button" data-tg="3.5">bestanden</button></div>
@@ -365,7 +365,7 @@ function overview(){
    <li>H\u00f6chstens zwei 01 bis 03, keine 00 und Jahresdurchschnitt mindestens 4,00: erreicht</li>
    <li>Nur eine schriftliche Aufsichtsarbeit mit 00, alles andere mindestens 04: Wiederholung dieser Arbeit</li>
    <li>Sonst nicht erreicht, Zweitkorrektur (bei Schnitt unter 4,00 aller Leistungen)</li>
-   <li><span class="flag ok">PR\u00dcFUNGSAMT</span> F\u00fcr das Bestehen z\u00e4hlen die 2 Aufsichtsarbeiten und die 3 Leistungsnachweise je einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026)</li></ul></section>
+   <li><span class="flag ok">Pr\u00fcfungsamt</span> F\u00fcr das Bestehen z\u00e4hlen die 2 Aufsichtsarbeiten und die 3 Leistungsnachweise je einfach (Auskunft Pr\u00fcfungsamt, Oktober 2026)</li></ul></section>
   <section class="card"><h3>Wiederholung (\u00a7\u00a7 15, 34)</h3><ul class="plain">
    <li>Studienjahr: einmalig, wenn der Jahresdurchschnitt mindestens 4,00 betr\u00e4gt, sonst nur als begr\u00fcndete Ausnahme</li>
    <li>Nur ein Studienjahr darf wiederholt werden, dabei sind alle Leistungen neu zu erbringen</li>
